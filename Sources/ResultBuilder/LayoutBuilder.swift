@@ -38,4 +38,8 @@ public struct LayoutBuilder {
         return [expression]
     }
 
+    public static func buildExpression(_ expression: [Layout]) -> [Layout] {
+        return expression
+    }
+
 }

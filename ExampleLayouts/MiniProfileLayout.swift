@@ -35,7 +35,7 @@ open class MiniProfileLayout: InsetLayout<View> {
                 if isCreator {
                     HStack {
                         LabelLayout(text: "Talks about")
-                        for topic in ["ios", "swift", "uikit"] {
+                        ["ios", "swift", "uikit"].map { topic in
                             LabelLayout(text: "#\(topic)")
                         }
                     }
