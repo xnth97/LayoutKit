@@ -34,30 +34,47 @@ class OverlayViewController: UIViewController {
     private var cachedLayouts: [Layout] = {
         return (0..<alignments.count).flatMap { backgroundCount in
             return (0..<alignments.count).map { overlayCount in
-                let backgroundLayouts = (0...backgroundCount).map { index in
-                    return SizeLayout(
-                        width: 60,
-                        height: 40,
-                        alignment: alignments[index],
-                        config: { $0.backgroundColor = .orange })
-                }
-                let overlayLayouts = (0...overlayCount).map { index in
-                    return SizeLayout(
-                        width: 40,
-                        height: 80,
-                        alignment: alignments[index],
-                        config: { $0.backgroundColor = .yellow })
-                }
+//                let backgroundLayouts = (0...backgroundCount).map { index in
+//                    return SizeLayout(
+//                        width: 60,
+//                        height: 40,
+//                        alignment: alignments[index],
+//                        config: { $0.backgroundColor = .orange })
+//                }
+//                let overlayLayouts = (0...overlayCount).map { index in
+//                    return SizeLayout(
+//                        width: 40,
+//                        height: 80,
+//                        alignment: alignments[index],
+//                        config: { $0.backgroundColor = .yellow })
+//                }
                 let text = "Primary alignment is me!\n"
                     + "Background: \(backgroundCount + 1) views (orange)\n"
                     + "Overlay: \(overlayCount + 1) views (yellow)"
-                let baseLayout = InsetLayout(
-                    inset: 70,
-                    sublayout: LabelLayout(text: text))
-                return OverlayLayout(
-                    primaryLayouts: [baseLayout],
-                    backgroundLayouts: backgroundLayouts,
-                    overlayLayouts: overlayLayouts)
+//                return OverlayLayout(
+//                    primaryLayouts: [baseLayout],
+//                    backgroundLayouts: backgroundLayouts,
+//                    overlayLayouts: overlayLayouts)
+                return OverlayLayout {
+                    LabelLayout(text: text)
+                        .padding(inset: 70)
+                } background: {
+                    for index in 0 ... backgroundCount {
+                        SizeLayout(
+                            width: 60,
+                            height: 40,
+                            alignment: alignments[index],
+                            config: { $0.backgroundColor = .orange })
+                    }
+                } overlay: {
+                    for index in 0 ... overlayCount {
+                        SizeLayout(
+                            width: 40,
+                            height: 80,
+                            alignment: alignments[index],
+                            config: { $0.backgroundColor = .yellow })
+                    }
+                }
             }
         }
     }()

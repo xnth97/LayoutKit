@@ -14,43 +14,42 @@ import LayoutKit
 /// A small version of a LinkedIn profile.
 open class MiniProfileLayout: InsetLayout<View> {
 
-    public init(imageName: String, name: String, headline: String) {
-        let image = SizeLayout<UIImageView>(
-            width: 80,
-            height: 80,
-            alignment: .center,
-            config: { imageView in
-                imageView.image = UIImage(named: imageName)
-
-                // Not the most performant way to do a corner radius, but this is just a demo.
-                imageView.layer.cornerRadius = 40
-                imageView.layer.masksToBounds = true
+    public init(imageName: String, name: String, headline: String, isOnline: Bool = true, isCreator: Bool = true) {
+        let layout = VStack(distribution: .leading) {
+            ZStack(alignment: .topLeading) {
+                SizeLayout<UIImageView>(size: CGSize(width: 80, height: 80)) { imageView in
+                    imageView.image = UIImage(named: imageName)
+                    imageView.layer.cornerRadius = 40
+                    imageView.layer.masksToBounds = true
+                }
+                if isOnline {
+                    LabelLayout(text: "Online")
+                }
             }
-        )
-
-        let nameLayout = LabelLayout(text: name, font: UIFont.systemFont(ofSize: 40))
-
-        let headlineLayout = LabelLayout(
-            text: headline,
-            font: UIFont.systemFont(ofSize: 20),
-            config: { label in
-                label.textColor = UIColor.darkGray
+            VStack {
+                HStack {
+                    LabelLayout(text: name, font: UIFont.systemFont(ofSize: 20.0, weight: .bold))
+                    LabelLayout(text: "1st", font: UIFont.systemFont(ofSize: 18.0, weight: .light))
+                }
+                LabelLayout(text: headline)
+                if isCreator {
+                    HStack {
+                        LabelLayout(text: "Talks about")
+                        for topic in ["ios", "swift", "uikit"] {
+                            LabelLayout(text: "#\(topic)")
+                        }
+                    }
+                }
             }
-        )
+            HStack(distribution: .fillEqualSpacing) {
+                for buttonText in ["Connect", "Follow", "Message"] {
+                    ButtonLayout(type: .system, title: buttonText)
+                }
+            }
+        }
 
         super.init(
-            insets: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8),
-            sublayout: StackLayout(
-                axis: .horizontal,
-                spacing: 8,
-                sublayouts: [
-                    image,
-                    StackLayout(axis: .vertical, spacing: 2, sublayouts: [nameLayout, headlineLayout])
-                ]
-            ),
-            config: { view in
-                view.backgroundColor = UIColor.white
-            }
-        )
+            insets: UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16),
+            sublayout: layout)
     }
 }

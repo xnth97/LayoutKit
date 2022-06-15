@@ -50,6 +50,41 @@ open class StackLayout<V: View>: BaseLayout<V> {
         super.init(alignment: alignment, flexibility: flexibility, viewReuseId: viewReuseId, config: config)
     }
 
+    public convenience init(axis: Axis,
+                            spacing: CGFloat = 0,
+                            distribution: StackLayoutDistribution = .fillFlexing,
+                            alignment: Alignment = .fill,
+                            flexibility: Flexibility? = nil,
+                            viewReuseId: String? = nil,
+                            @LayoutBuilder builder: () -> [Layout]) {
+        self.init(axis: axis,
+                  spacing: spacing,
+                  distribution: distribution,
+                  alignment: alignment,
+                  flexibility: flexibility,
+                  viewReuseId: viewReuseId,
+                  sublayouts: builder(),
+                  config: nil)
+    }
+
+    public convenience init(axis: Axis,
+                            spacing: CGFloat = 0,
+                            distribution: StackLayoutDistribution = .fillFlexing,
+                            alignment: Alignment = .fill,
+                            flexibility: Flexibility? = nil,
+                            viewReuseId: String? = nil,
+                            @LayoutBuilder builder: () -> [Layout],
+                            config: ((V) -> Void)? = nil) {
+        self.init(axis: axis,
+                  spacing: spacing,
+                  distribution: distribution,
+                  alignment: alignment,
+                  flexibility: flexibility,
+                  viewReuseId: viewReuseId,
+                  sublayouts: builder(),
+                  config: config)
+    }
+
     init(axis: Axis,
          spacing: CGFloat = 0,
          distribution: StackLayoutDistribution = .fillFlexing,

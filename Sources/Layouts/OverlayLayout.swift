@@ -53,6 +53,37 @@ open class OverlayLayout<V: View>: BaseLayout<V> {
         super.init(alignment: alignment, flexibility: flexibility, viewReuseId: viewReuseId, config: config)
     }
 
+    public convenience init(alignment: Alignment = .fill,
+                            flexibility: Flexibility = .flexible,
+                            viewReuseId: String? = nil,
+                            @LayoutBuilder primary: () -> [Layout],
+                            @LayoutBuilder background: () -> [Layout],
+                            @LayoutBuilder overlay: () -> [Layout],
+                            config: ((V) -> Void)? = nil) {
+        self.init(primaryLayouts: primary(),
+                  backgroundLayouts: background(),
+                  overlayLayouts: overlay(),
+                  alignment: alignment,
+                  flexibility: flexibility,
+                  viewReuseId: viewReuseId,
+                  config: config)
+    }
+
+    public convenience init(alignment: Alignment = .fill,
+                            flexibility: Flexibility = .flexible,
+                            viewReuseId: String? = nil,
+                            @LayoutBuilder primary: () -> [Layout],
+                            @LayoutBuilder background: () -> [Layout],
+                            @LayoutBuilder overlay: () -> [Layout]) {
+        self.init(primaryLayouts: primary(),
+                  backgroundLayouts: background(),
+                  overlayLayouts: overlay(),
+                  alignment: alignment,
+                  flexibility: flexibility,
+                  viewReuseId: viewReuseId,
+                  config: nil)
+    }
+
     init(primaryLayouts: [Layout],
          backgroundLayouts: [Layout] = [],
          overlayLayouts: [Layout] = [],
